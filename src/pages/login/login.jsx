@@ -5,12 +5,14 @@ import {
     Form,
     Input,
     Button,
-    Icon
+    Icon,
+    message
  } from "antd"
  import './login.less'
  import {LockOutlined,UserOutlined } from '@ant-design/icons';
-
+import memoryUtils from '../../utils/memoryUtils'
 import logo from '../../assets/images/logo.png'
+import {reqLogin} from '../../api'
 const Item= Form.Item
 
 
@@ -20,14 +22,30 @@ class login extends Component{
     //     console.log('Received values of form: ', values);
     // }
 //前端数据验证
-Login =()=>{
+handLeSubmit =(event)=>{
+
+    event.preventDeafault()
+
+
   this.props.form.validateFields(async(err,values)=>{
     if(!err){
-
         const {username,password}=values
-        console.log('提交登录请求',username,password)
+       const result = await reqLogin(username,password)
+
+       if(result.status === 0){
+
+        message.success('登录成功')
+        // 保存用户登录信息
+        const user = result.data
+        storageUtils.saveUser(user)
+        memoryUtils.user = result.data
+        //页面跳转因为不需要引入所以使用push
+        this.props.history.replace('/')
+       }else{
+        message.error(result.msg)
+       }
     }else{
-        console.log(err)
+        console.log('检验失败！')
     }
   })
 };
@@ -66,22 +84,24 @@ validator = (rule, value, callback) => {
 
                     <section className="login-content">
                         <h2>用户登录</h2>
-                        <Form onSubmit={this.login} className="login-form"       
-                          initialValues={{
-                          remember: true,
-                         }}
+                        <Form onSubmit={this.handLeSubmit} className="login-form"       
+                        //   initialValues={{
+                        //   remember: true,
+                        //  }}
                         //  onFinish={onFinish} 
                           >
-                            <Item       
-                        name="username"
+                            <Item            
+                        name="username" 
+                        initialValue='admin'
                         rules={[
                         {  required: true, message: 'Please input your Username!'},
                         { min: 4,message:'用户名必须大于四位数'},
                         {max:12, message:'用户名必须小于12位'},
-                        {pattern: /^[a-zA-Z0-9_]+$/,message:'用户名必须是英文、数组或下划线'}
-                        ]}
+                        {pattern: /^[a-zA-Z0-9_]+$/,message:'用户名必须是英文、数组或下划线'},
+                            ]
+                    } 
                           >
-                                <Input prefix={<UserOutlined style = {{color:'rgba(0,0,0,.25)'}}/>}  placeholder="用户名"/>
+                                <Input prefix={<UserOutlined style = {{color:'rgba(0,0,0,.25)'}}/>}  placeholder="用户名"   />
                             </Item>
                             <Form.Item
                             name = "password"
