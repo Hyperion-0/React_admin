@@ -6,7 +6,8 @@ import {
     Input,
     Button,
     Icon,
-    message
+    message,
+
  } from "antd"
  import './login.less'
  import {LockOutlined,UserOutlined } from '@ant-design/icons';
@@ -15,62 +16,120 @@ import logo from '../../assets/images/logo.png'
 import {reqLogin} from '../../api'
 const Item= Form.Item
 
+const onFinishFailed =(values)=>{
+    // console.log(values.username)
+
+}
+
+// checkAuth=async()=>{
+          
+//     if (this.formRef && this.formRef.current){ //很重要，在render后，formRef才实例化
+//          try {
+//              // 使用 validateFields 获取多个字段值,若验证通过，则返回表单值数组
+//              const values = await this.formRef.current.validateFields();
+//              console.log('Validate Success:', values);
+  
+//              //执行提交数据
+  
+//            } catch (errorInfo) {
+//              //若验证失败，返回数组{values:{表单值数组},errorFields:{验证未通过的表单值数组:{errors,name}}}
+//              console.log('Failed:', errorInfo);
+//            }
+  
+//      }
+//   }
+
+
+const  onFinish =(values)=>{
+//     async()=>{
+//     console.log(values)
+//     const value = await this.formRef.curent.validateField();
+//     console.log(value)
+// }
+    // async()=>{
+//     if(!err){
+// const values = await this.formRef.current.validateFields();
+// console.log('Validate Success:', values);
+//     }
+// }
+
+
+
+
+
+
+//   async(err,values)=>{
+    
+//         if(!err){
+//             const {username,password}=values
+//            const result = await reqLogin(username,password)
+//            if(result.status === 0){
+//             console.log(result)
+            
+//             message.success('登录成功',2)
+//             // 保存用户登录信息
+//             const user = result.data
+//             storageUtils.saveUser(user)
+//             memoryUtils.user = result.data
+//             //页面跳转因为不需要引入所以使用push
+//             this.props.history.replace('/')
+//            }else{
+//             message.error(result.msg)
+//            }
+//         }else{
+//             console.log('检验失败！')
+//         }
+//       })
+
+
+
+}
 
 
 class login extends Component{
+    myForm = React.createRef()
+  
     // onFinish = (values) =>{
     //     console.log('Received values of form: ', values);
     // }
 //前端数据验证
-handLeSubmit =(event)=>{
-
-    event.preventDeafault()
 
 
-  this.props.form.validateFields(async(err,values)=>{
-    if(!err){
-        const {username,password}=values
-       const result = await reqLogin(username,password)
 
-       if(result.status === 0){
 
-        message.success('登录成功')
-        // 保存用户登录信息
-        const user = result.data
-        storageUtils.saveUser(user)
-        memoryUtils.user = result.data
-        //页面跳转因为不需要引入所以使用push
-        this.props.history.replace('/')
-       }else{
-        message.error(result.msg)
-       }
-    }else{
-        console.log('检验失败！')
-    }
-  })
-};
 
 
 // 建议换成将回调函数换成promise
-validator = (rule, value, callback) => {
-    // console.log(rule, value)
+validator = (rule, value) => {
+
     const length = value && value.length
     const pwdReg = /^[a-zA-Z0-9_]+$/
     if (!value) {
     // callback 如果不传参代表校验成功,如果传参代表校验失败,并且会提示错误
-    callback('必须输入密码')
+   return Promise.reject('必须输入密码')
     } else if (length < 4) {
-    callback('密码必须大于 4 位')
+        return Promise.reject('密码必须大于 4 位')
     } else if (length > 12) {
-    callback('密码必须小于 12 位')
+        return Promise.reject('密码必须小于 12 位')
     } else if (!pwdReg.test(value)) {
-    callback('密码必须是英文、数组或下划线组成')
+        return   Promise.reject('密码必须是英文、数组或下划线组成')
     } else {
-    callback() // 必须调用 callback
+        console.log(value)
+        return  Promise.resolve() // antd4不能使用callback
     }
 }
 
     render(){
+
+
+
+
+        
+        // 如果用户已经登陆 , 自动跳转到 admin
+// if (memoryUtils.user && memoryUtils.user._id) {
+//     return <Redirect to='/'/>
+//     }
+// const {getFieldDecorator} = this.props.form
 
         // getFieldDecorator = this.props.form
 
@@ -84,11 +143,14 @@ validator = (rule, value, callback) => {
 
                     <section className="login-content">
                         <h2>用户登录</h2>
-                        <Form onSubmit={this.handLeSubmit} className="login-form"       
+                        <Form className="login-form"     
+                         onFinish={onFinish}   
+                        onFinishFailed={onFinishFailed}
+                        ref = {this.formRef}
                         //   initialValues={{
                         //   remember: true,
                         //  }}
-                        //  onFinish={onFinish} 
+                        
                           >
                             <Item            
                         name="username" 
@@ -105,10 +167,11 @@ validator = (rule, value, callback) => {
                             </Item>
                             <Form.Item
                             name = "password"
-                            rules={[
-                                   {   validator :this.validator}
+                            ref = {this.formRef}
+                            // rules={[
+                            //        {   validator :this.validator}
                                 
-                            ]}
+                            // ]}
                             >
                                 <Input prefix= {<LockOutlined style = {{color:'rgba(0,0,0,.25)'}}/> } type="password" placeholder="密码"/>
                             </Form.Item>
