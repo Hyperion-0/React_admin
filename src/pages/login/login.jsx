@@ -16,12 +16,6 @@ import logo from '../../assets/images/logo.png'
 import {reqLogin} from '../../api'
 const Item= Form.Item
 
-// const onFinishFailed =(values)=>{
-//     // console.log(values.username)
-
-// }
-
-
 
 class Login extends Component{
     // onFinish = (values) =>{
@@ -48,24 +42,6 @@ class Login extends Component{
         }else{
             message.error(res.msg)
         }
-
-
-// {
-
-
-        
-//         // this.myRef.current.validateFields().then((err,value) => {
-            
-          
-//         //    const result = reqLogin(username,password)
-        
-//         //     // 验证通过
-//         //     // console.log(values)
-//         // }, () => {
-//         //     //  验证失败
-            
-//         // })
-//     }
     
 
     }
