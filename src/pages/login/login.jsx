@@ -1,5 +1,5 @@
 import React,{Component, useEffect} from "react";
-
+import {Redirect} from "react-router-dom"
 // import { Header } from "antd/es/layout/layout";
 import { 
     Form,
@@ -12,6 +12,7 @@ import {
  import './login.less'
  import {LockOutlined,UserOutlined } from '@ant-design/icons';
 import memoryUtils from '../../utils/memoryUtils'
+import storageUtil from "../../utils/storageUtil";
 import logo from '../../assets/images/logo.png'
 import {reqLogin} from '../../api'
 const Item= Form.Item
@@ -36,6 +37,7 @@ class Login extends Component{
         if(res.status === 0){
             memoryUtils.user = res.data
             const user =res.data
+            storageUtil.saveUser(user)
             // this.props.navigate("/admin")
             this.props.history.replace('/')
             message.success("登录成功")
@@ -72,8 +74,15 @@ validator = (rule, value) => {
 
 
     render(){
+        // 读取本地localstorage,如果存在直接跳转到首页。
 
-        const user = memoryUtils.user
+        const user = storageUtil.getUser();
+        if(user._id){
+            return <Redirect to ='/'/>
+        }
+
+
+
         return(
             <div className="login">
              
