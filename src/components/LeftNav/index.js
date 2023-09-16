@@ -18,7 +18,7 @@ const { SubMenu } = Menu;
         pre.push((
           <Menu.Item key={item.key}>
             <Link to={item.key}>
-              <Icon type={item.icon} />
+              {/* <Icon type={item.icon} /> */}
               <span>{item.title}</span>
             </Link>
           </Menu.Item>
@@ -29,7 +29,7 @@ const { SubMenu } = Menu;
             key={item.key}
             title={
               <span>
-                <Icon type={item.icon} />
+                {/* <Icon type={item.icon} /> */}
                 <span>
                   {item.title}
                 </span>
@@ -54,7 +54,7 @@ const { SubMenu } = Menu;
         return (
           <Menu.Item key={item.key}>
             <Link to={item.key}>
-              <Icon type={item.icon} />
+              {/* <Icon type={item.icon} /> */}
               <span>{item.title}</span>
             </Link>
           </Menu.Item>
@@ -65,7 +65,7 @@ const { SubMenu } = Menu;
             key={item.key}
             title={
               <span>
-                <Icon type={item.icon} />
+                {/* <Icon type={item.icon} /> */}
                 <span>
                   {item.title}
                 </span>

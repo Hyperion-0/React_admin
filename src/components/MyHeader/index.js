@@ -74,7 +74,7 @@ componentWillMount(){
           <div className='header-use'></div>
           <div className='currentTime'>{this.state.currentTime}</div>
          <div className='weather'>天气晴</div>
-         <div class = 'userInfo'>
+         <div className = 'userInfo'>
           欢迎,admin
           <Button style={{marginLeft:'20px'}} onClick={this.logout}>退出</Button>
                </div>

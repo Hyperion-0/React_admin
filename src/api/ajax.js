@@ -2,6 +2,7 @@ import axios from 'axios';
 import qs from 'qs';
 import { message as meg } from "antd"
 
+
 // 创建axios实例
 const request = axios.create({
   baseURL: 'http://127.0.0.1:3000',
