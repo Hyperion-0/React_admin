@@ -85,7 +85,7 @@ const { SubMenu } = Menu;
 
   render() {
     let defaultKey = this.props.location.pathname;
-    console.log(defaultKey)
+    // console.log(defaultKey)
 
 
     return (
@@ -112,4 +112,6 @@ const { SubMenu } = Menu;
     )
   }
 }
+
+// 使用withRouter对组件进行包装
 export default withRouter(LeftNav)

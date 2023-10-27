@@ -67,6 +67,7 @@ componentWillMount(){
 }
 
   render() {
+    const user = memoryUtils.user;
     return (
       <Header  style={{background:'#fff' , padding:0}}>
         <div  className='header'>
@@ -75,7 +76,7 @@ componentWillMount(){
           <div className='currentTime'>{this.state.currentTime}</div>
          <div className='weather'>天气晴</div>
          <div className = 'userInfo'>
-          欢迎,admin
+          欢迎,{user.username}
           <Button style={{marginLeft:'20px'}} onClick={this.logout}>退出</Button>
                </div>
           <div>

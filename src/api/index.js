@@ -1,6 +1,7 @@
 // import Password from "antd/lib/input/Password";
 import ajax  from "./ajax";
-
+ 
+ const BASE ='http://127.0.0.1:3000'
 // export const reqLogin =(username,password) => { 
 // // console.log(username,password)
 //     return ajax('/login',{username,password},'POST')
@@ -22,6 +23,7 @@ export const reqAddCategory = ({ categoryName }) => {
     categoryName
   })
 }
+
 export const reqLogin = (data) => ajax({
     url: "/login",
     data,

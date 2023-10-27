@@ -19,9 +19,7 @@ const Item= Form.Item
 
 
 class Login extends Component{
-    // onFinish = (values) =>{
-    //     console.log('Received values of form: ', values);
-    // }
+
     constructor() {
         super();
         this.myRef = React.createRef();
@@ -33,7 +31,7 @@ class Login extends Component{
         // const {username,password} =values
 
         const res =await reqLogin(values);
-        console.log(res)
+        // console.log(res)
         if(res.status === 0){
             memoryUtils.user = res.data
             const user =res.data
