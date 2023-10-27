@@ -6,19 +6,20 @@ export default class  AddUpdateForm extends Component{
     
     
     UNSAFE_componentWillMount(){
-
-        this.props.setMyForm(this.myForm)
-        
+        this.props.setMyForm(this.myForm)       
     }
 
     
     render(){
         
-        const {categoryName} =this.props;
+        // const {categoryName} =this.props;
+        
+
+
         return(
             <Form   ref={this.myForm}>
                 <Form.Item
-                initialValue='分类名称必须输入'    
+                name='categoryName'
                 // {categoryName}
                rules={[
                 {

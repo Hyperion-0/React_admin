@@ -17,7 +17,7 @@ export default class Category extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props)
+    
     this.state = {
       categorys: [],
       showStatus: 0, //0 不显示，1 显示添加，2 显示修改
@@ -62,17 +62,40 @@ export default class Category extends Component {
   }
 
   componentWillMount() {
-   this.initColumns()
+    this.initColumns()
   }
 
   componentDidMount() {
     this.getCategorys();
   }
 
-  handleok = () => {
-    // console.log(this.myForm.current.validateFields)
-    this.myForm.current.validateFields().then((err,values)=>{
-console.log(err,values)
+  handleok =() => {
+    this.myForm.current.validateFields().then(async( values) => {
+      const {categoryName} = values;
+      const {showStatus} = this.state;
+      console.log(showStatus)
+      let result;
+      if(showStatus ===1){
+         result   = await reqAddCategory({categoryName})
+      }else{
+        const categoryId = this.category._id;
+        result = await reqUpdateCategory({categoryId,categoryName})
+      }
+      // console.log(this.myForm)
+      // console.log('@',this.myForm)
+      this. myForm.current.resetFields();
+      // this.myForm.setState({showStatus:0})
+      this.setState({showStatus:0})
+      const actionText = this.showStatus === 1? '添加':'修改'
+     if(result.status === 0) {
+        // 重新获取分类列表数据显示
+        this.getCategorys();
+        message.success(actionText + '分类成功')
+
+      } else {
+        message.success(actionText + '分类失败');
+      }
+
     })
 
   }
@@ -81,9 +104,9 @@ console.log(err,values)
       showStatus: 0
     })
   }
-q
+  
   render() {
-    
+
 
 
     const extra = (
@@ -118,7 +141,7 @@ q
           onOk={this.handleok}
           onCancel={this.handleCancel}
         >
-          <AddUpdateForm categoryName={category.name} setMyForm={(myForm)=>{this.myForm=myForm}} >
+          <AddUpdateForm categoryName={category.name} setMyForm={(myForm) => { this.myForm = myForm }} >
 
           </AddUpdateForm>
         </Modal>
